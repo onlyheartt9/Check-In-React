@@ -12,7 +12,7 @@ import {
 // export const CHECK_IN_ADDRESS = "0x55b6E44254c82Ee44AfE66fa00c7f7Cc9da32Cd8";
 // export const CHECK_IN_ADDRESS = "0xBbD0091D48f55287604FC6A5e141878068C6c73a";
 // export const CHECK_IN_ADDRESS = "0xB55476D3489B593EB9BB02E8D18c64e46b349461";
-export const CHECK_IN_ADDRESS = "0x9713b7Cb3da2eD58AcDB5B971CBeb0bD3a36D77E";
+export const CHECK_IN_ADDRESS = "0x78ec6Db4F7E4afAcf07f986AA4a5dcF4424f3392";
 
 // const ConversionMethod = {
 //     'Number':Number,
@@ -38,10 +38,10 @@ export const useTeamInfo = () => {
   return useContractRead({
     address: CHECK_IN_ADDRESS,
     abi: checkInAbi,
-    functionName: "teamInfo",
+    functionName: "getTeamInfo",
     args: [1],
     account: walletClient?.account,
-    scopeKey: "teamInfo",
+    scopeKey: "getTeamInfo",
     watch: true,
   });
 };

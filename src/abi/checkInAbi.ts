@@ -219,6 +219,24 @@ export const checkInAbi = [
   },
   {
     inputs: [{ internalType: "address", name: "player", type: "address" }],
+    name: "getPlayerInfo",
+    outputs: [
+      {
+        components: [
+          { internalType: "uint8", name: "teamId", type: "uint8" },
+          { internalType: "uint256", name: "score", type: "uint256" },
+          { internalType: "uint256", name: "lastCheckTime", type: "uint256" },
+        ],
+        internalType: "struct CheckpointStorage.Player",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "address", name: "player", type: "address" }],
     name: "getPlayerRewards",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
@@ -236,6 +254,26 @@ export const checkInAbi = [
     name: "getSingleScore",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint8", name: "teamId", type: "uint8" }],
+    name: "getTeamInfo",
+    outputs: [
+      {
+        components: [
+          { internalType: "enum CheckType", name: "teamType", type: "uint8" },
+          { internalType: "address", name: "player1", type: "address" },
+          { internalType: "address", name: "player2", type: "address" },
+          { internalType: "address", name: "player3", type: "address" },
+          { internalType: "bool", name: "finished", type: "bool" },
+        ],
+        internalType: "struct CheckpointStorage.Team",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
