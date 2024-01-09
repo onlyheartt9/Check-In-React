@@ -6,6 +6,7 @@ import { useAccount } from "wagmi";
 import { useRouter } from "next/router";
 import { ethers } from "ethers";
 import CreateTeamModal from "./Modal/CreateTeamModal";
+import { Toaster } from "react-hot-toast";
 
 function Layout({ children }) {
   const { isConnected } = useAccount();
@@ -48,6 +49,7 @@ function Layout({ children }) {
       </header>
       <main>{children}</main>
       <footer>{/* 放置全局底部内容 */}</footer>
+      <Toaster />
     </div>
   );
 }

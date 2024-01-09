@@ -11,7 +11,7 @@ import {
   Select,
   SelectItem,
 } from "@nextui-org/react";
-import { RED_PACKET_ADDRESS } from "@/server/checkInServer";
+import { useCreateTeam } from "@/server/checkInServer";
 import { ethers } from "ethers";
 // import { useLinkApprove } from "@/server/linkServer";
 import { Provider, useStore } from "reto";
@@ -29,15 +29,15 @@ const useOk = ({ value, ref }) => {
 const nums = [
   {
     label: "1",
-    value: 1,
+    value: 0,
   },
   {
     label: "2",
-    value: 2,
+    value: 1,
   },
   {
     label: "3",
-    value: 3,
+    value: 2,
   },
 ];
 
@@ -45,19 +45,14 @@ const InnerCreateTeamModal = ({ className }: CreateTeamModalProps) => {
   const {
     value,
     setValue,
-    onAddDeposit,
-    // depositLoading,
-    // setDepositLoading,
-    // step,
-    // setStep,
   } = useStore(CreateTeamModalStore);
   const ref = useRef<any>();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const { onOk } = useOk({ value, ref });
-
-  const onChange = (e) => {
-    setValue(e.target.value);
+  const { write } = useCreateTeam();
+  const onOk = () => {
+    write({ args: [value-0] });
   };
+  
 
   return (
     <>
@@ -76,10 +71,14 @@ const InnerCreateTeamModal = ({ className }: CreateTeamModalProps) => {
               </ModalHeader>
               <ModalBody className="flex flex-col">
                 <Select
+                  required={true}
                   labelPlacement="outside"
                   label="队伍人数"
                   placeholder="请选择"
                   className="max-w-xs"
+                  onChange={(e)=>{
+                    setValue(e.target.value)
+                  }}
                 >
                   {nums.map((animal) => (
                     <SelectItem key={animal.value} value={animal.value}>
@@ -94,9 +93,9 @@ const InnerCreateTeamModal = ({ className }: CreateTeamModalProps) => {
                 </Button>
                 <Button
                   onPress={() => {
-                    if (!ref?.current.validate()) {
-                      return;
-                    }
+                    // if (!ref?.current.validate()) {
+                    //   return;
+                    // }
                     onOk();
                   }}
                 >

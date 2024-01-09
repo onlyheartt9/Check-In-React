@@ -1,12 +1,25 @@
-
-
 import React, { useCallback } from "react";
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip, getKeyValue} from "@nextui-org/react";
-import {EditIcon} from "./EditIcon";
-import {DeleteIcon} from "./DeleteIcon";
-import {EyeIcon} from "./EyeIcon";
-import {columns, users} from "./data";
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  User,
+  Chip,
+  Tooltip,
+  getKeyValue,
+} from "@nextui-org/react";
+import { EditIcon } from "../../../components/Icon/EditIcon";
+import { DeleteIcon } from "../../../components/Icon/DeleteIcon";
+import { EyeIcon } from "../../../components/Icon/EyeIcon";
+import { columns, users } from "./data";
 import { useTeamInfo } from "@/server/checkInServer";
+import { ethers } from "ethers";
+import { copyToClipboard } from "@/utils/copyToClipboard";
+import toast from "react-hot-toast";
+import { AddIcon } from "@/components/Icon/AddIcon";
 
 const statusColorMap = {
   active: "success",
@@ -14,53 +27,58 @@ const statusColorMap = {
   vacation: "warning",
 };
 
+const dealData = (data) => {
+  return data.map((item, index) => {
+    const plays = [item?.player1, item?.player2, item?.player3].filter((item) =>
+      ethers.isAddress(item)
+    );
+    return {
+      ...item,
+      id: index + 1,
+      limit: item?.teamType + 1,
+      currentNum: plays.length,
+    };
+  });
+};
+
 export default function TeamTable() {
-  const [data] = useTeamInfo();
-  console.log(5555,data)
+  const [data0] = useTeamInfo({ args: [1] });
+  const [data1] = useTeamInfo({ args: [2] });
+  const data = dealData([data0, data1]);
+  console.log(data);
+  const addTeam = (team)=>{
 
-  const renderCell = useCallback((user, columnKey) => {
-    const cellValue = user[columnKey];
+  }
 
+  const renderCell = useCallback((team, columnKey) => {
+    const cellValue = team[columnKey];
+    console.log(cellValue, 9999);
     switch (columnKey) {
-      case "name":
+      case "id":
         return (
-          <User
-            avatarProps={{radius: "lg", src: user.avatar}}
-            description={user.email}
-            name={cellValue}
-          >
-            {user.email}
-          </User>
+          <>
+            <div
+              onClick={() => {
+                toast.success("Successfully toasted!");
+                copyToClipboard(cellValue);
+              }}
+            >{`No.${cellValue}`}</div>
+          </>
         );
-      case "role":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-sm capitalize">{cellValue}</p>
-            <p className="text-bold text-sm capitalize text-default-400">{user.team}</p>
-          </div>
-        );
-      case "status":
-        return (
-          <Chip className="capitalize" color={statusColorMap[user.status]} size="sm" variant="flat">
-            {cellValue}
-          </Chip>
-        );
+      case "limit":
+        return <div>{cellValue}</div>;
+      case "currentNum":
+        return <div>{cellValue}</div>;
       case "actions":
         return (
           <div className="relative flex items-center gap-2">
-            <Tooltip content="Details">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                <EyeIcon />
-              </span>
-            </Tooltip>
-            <Tooltip content="Edit user">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                <EditIcon />
-              </span>
-            </Tooltip>
-            <Tooltip color="danger" content="Delete user">
-              <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                <DeleteIcon />
+            <Tooltip content="加入队伍">
+              <span className="text-lg !text-default-400 cursor-pointer active:opacity-50">
+                <AddIcon
+                  onClick={() => {
+                    addTeam(team);
+                  }}
+                />
               </span>
             </Tooltip>
           </div>
@@ -71,22 +89,28 @@ export default function TeamTable() {
   }, []);
 
   return (
-  <Table aria-label="Example table with custom cells">
+    <Table aria-label="Example table with custom cells">
       <TableHeader columns={columns}>
         {(column) => (
-          <TableColumn key={column.uid} align={column.uid === "actions" ? "center" : "start"}>
+          <TableColumn
+            key={column.uid}
+            align={column.uid === "actions" ? "center" : "start"}
+          >
             {column.name}
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody items={users}>
+      <TableBody items={data}>
         {(item) => (
           <TableRow key={item.id}>
-            {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+            {(columnKey) => (
+              <TableCell className="text-foreground-500">
+                {renderCell(item, columnKey)}
+              </TableCell>
+            )}
           </TableRow>
         )}
       </TableBody>
     </Table>
   );
 }
-

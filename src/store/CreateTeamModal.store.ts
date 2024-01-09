@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useTransaction } from "wagmi";
 
 export const CreateTeamModalStore = () => {
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState('1');
   const [approvalTx, setApprovalTx] = useState(null);
   const { isLoading } = useTransaction({
     hash: approvalTx,

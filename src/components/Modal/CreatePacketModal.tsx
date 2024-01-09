@@ -12,9 +12,6 @@ import {
   SelectItem,
 } from "@nextui-org/react";
 import {
-  RED_PACKET_ADDRESS,
-  useAttendPacket,
-  useCreatePacket,
   useTeamInfo,
 } from "@/server/checkInServer";
 import { ethers } from "ethers";

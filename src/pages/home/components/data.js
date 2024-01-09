@@ -1,8 +1,8 @@
 import React from "react";
 const columns = [
-  {name: "NAME", uid: "name"},
-  {name: "ROLE", uid: "role"},
-  {name: "STATUS", uid: "status"},
+  {name: "队伍号", uid: "id"},
+  {name: "人数上限", uid: "limit"},
+  {name: "当前队伍人数", uid: "currentNum"},
   {name: "ACTIONS", uid: "actions"},
 ];
 
